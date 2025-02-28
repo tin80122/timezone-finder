@@ -1,0 +1,191 @@
+[
+  {
+    "name": "Afghanistan",
+    "code": "AF",
+    "timezones": ["Asia/Kabul"],
+    "capital": "Kabul",
+    "latlng": [33, 65]
+  },
+  {
+    "name": "Albania",
+    "code": "AL",
+    "timezones": ["Europe/Tirane"],
+    "capital": "Tirana",
+    "latlng": [41, 20]
+  },
+  {
+    "name": "Algeria",
+    "code": "DZ",
+    "timezones": ["Africa/Algiers"],
+    "capital": "Algiers",
+    "latlng": [28, 3]
+  },
+  {
+    "name": "Argentina",
+    "code": "AR",
+    "timezones": ["America/Argentina/Buenos_Aires"],
+    "capital": "Buenos Aires",
+    "latlng": [-34, -64]
+  },
+  {
+    "name": "Australia",
+    "code": "AU",
+    "timezones": ["Australia/Sydney", "Australia/Melbourne", "Australia/Perth", "Australia/Brisbane", "Australia/Adelaide", "Australia/Darwin", "Australia/Hobart"],
+    "capital": "Canberra",
+    "latlng": [-27, 133]
+  },
+  {
+    "name": "Austria",
+    "code": "AT",
+    "timezones": ["Europe/Vienna"],
+    "capital": "Vienna",
+    "latlng": [47.33333333, 13.33333333]
+  },
+  {
+    "name": "Brazil",
+    "code": "BR",
+    "timezones": ["America/Sao_Paulo", "America/Manaus", "America/Recife", "America/Rio_Branco", "America/Noronha"],
+    "capital": "Brasília",
+    "latlng": [-10, -55]
+  },
+  {
+    "name": "Canada",
+    "code": "CA",
+    "timezones": ["America/St_Johns", "America/Halifax", "America/Toronto", "America/Winnipeg", "America/Edmonton", "America/Vancouver", "America/Yellowknife", "America/Iqaluit"],
+    "capital": "Ottawa",
+    "latlng": [60, -95]
+  },
+  {
+    "name": "China",
+    "code": "CN",
+    "timezones": ["Asia/Shanghai", "Asia/Urumqi"],
+    "capital": "Beijing",
+    "latlng": [35, 105]
+  },
+  {
+    "name": "Egypt",
+    "code": "EG",
+    "timezones": ["Africa/Cairo"],
+    "capital": "Cairo",
+    "latlng": [27, 30]
+  },
+  {
+    "name": "France",
+    "code": "FR",
+    "timezones": ["Europe/Paris"],
+    "capital": "Paris",
+    "latlng": [46, 2]
+  },
+  {
+    "name": "Germany",
+    "code": "DE",
+    "timezones": ["Europe/Berlin"],
+    "capital": "Berlin",
+    "latlng": [51, 9]
+  },
+  {
+    "name": "India",
+    "code": "IN",
+    "timezones": ["Asia/Kolkata"],
+    "capital": "New Delhi",
+    "latlng": [20, 77]
+  },
+  {
+    "name": "Indonesia",
+    "code": "ID",
+    "timezones": ["Asia/Jakarta", "Asia/Makassar", "Asia/Jayapura"],
+    "capital": "Jakarta",
+    "latlng": [-5, 120]
+  },
+  {
+    "name": "Iran",
+    "code": "IR",
+    "timezones": ["Asia/Tehran"],
+    "capital": "Tehran",
+    "latlng": [32, 53]
+  },
+  {
+    "name": "Italy",
+    "code": "IT",
+    "timezones": ["Europe/Rome"],
+    "capital": "Rome",
+    "latlng": [42.83333333, 12.83333333]
+  },
+  {
+    "name": "Japan",
+    "code": "JP",
+    "timezones": ["Asia/Tokyo"],
+    "capital": "Tokyo",
+    "latlng": [36, 138]
+  },
+  {
+    "name": "Mexico",
+    "code": "MX",
+    "timezones": ["America/Mexico_City", "America/Tijuana", "America/Hermosillo", "America/Mazatlan", "America/Cancun"],
+    "capital": "Mexico City",
+    "latlng": [23, -102]
+  },
+  {
+    "name": "New Zealand",
+    "code": "NZ",
+    "timezones": ["Pacific/Auckland", "Pacific/Chatham"],
+    "capital": "Wellington",
+    "latlng": [-41, 174]
+  },
+  {
+    "name": "Russia",
+    "code": "RU",
+    "timezones": ["Europe/Moscow", "Europe/Kaliningrad", "Europe/Samara", "Asia/Yekaterinburg", "Asia/Omsk", "Asia/Krasnoyarsk", "Asia/Irkutsk", "Asia/Yakutsk", "Asia/Vladivostok", "Asia/Magadan", "Asia/Kamchatka"],
+    "capital": "Moscow",
+    "latlng": [60, 100]
+  },
+  {
+    "name": "South Africa",
+    "code": "ZA",
+    "timezones": ["Africa/Johannesburg"],
+    "capital": "Pretoria",
+    "latlng": [-29, 24]
+  },
+  {
+    "name": "South Korea",
+    "code": "KR",
+    "timezones": ["Asia/Seoul"],
+    "capital": "Seoul",
+    "latlng": [37, 127.5]
+  },
+  {
+    "name": "Spain",
+    "code": "ES",
+    "timezones": ["Europe/Madrid", "Atlantic/Canary"],
+    "capital": "Madrid",
+    "latlng": [40, -4]
+  },
+  {
+    "name": "Taiwan",
+    "code": "TW",
+    "timezones": ["Asia/Taipei"],
+    "capital": "Taipei",
+    "latlng": [23.5, 121]
+  },
+  {
+    "name": "Thailand",
+    "code": "TH",
+    "timezones": ["Asia/Bangkok"],
+    "capital": "Bangkok",
+    "latlng": [15, 100]
+  },
+  {
+    "name": "United Kingdom",
+    "code": "GB",
+    "timezones": ["Europe/London"],
+    "capital": "London",
+    "latlng": [54, -2]
+  },
+  {
+    "name": "United States",
+    "code": "US",
+    "timezones": ["America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles", "America/Anchorage", "Pacific/Honolulu", "America/Phoenix", "America/Detroit", "America/Indiana/Indianapolis"],
+    "capital": "Washington D.C.",
+    "latlng": [38, -97]
+  }
+]
