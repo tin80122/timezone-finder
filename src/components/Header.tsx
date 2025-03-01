@@ -45,7 +45,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import WatchLaterIcon from '@mui/icons-material/WatchLater';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 interface HeaderProps {
