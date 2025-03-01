@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ReactGA from "react-ga4";
 import {
   Container,
   Box,
@@ -81,7 +82,13 @@ const theme = createTheme({
 // 標籤頁類型
 type TabValue = "map" | "list" | "timeline" | "settings";
 
+
+
 function App() {
+  // 初始化
+  ReactGA.initialize("G-SM1Y4XMXLB");
+  const hasVisit = useRef(false)
+
   // 在移動設備上使用標籤頁導航
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [activeTab, setActiveTab] = useState<TabValue>("map");
@@ -104,6 +111,13 @@ function App() {
     timeZoneRange,
     setTimeZoneRange,
   } = useTimezones();
+
+  useEffect(() => {
+    if(!hasVisit.current){
+      ReactGA.send({ hitType: "pageview", page: "/" }); // 或者你想要追蹤的頁面路徑，例如 "/home"
+      hasVisit.current = true
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
