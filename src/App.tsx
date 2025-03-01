@@ -86,7 +86,7 @@ function App() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [activeTab, setActiveTab] = useState<TabValue>("map");
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: TabValue) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: TabValue) => {
     setActiveTab(newValue);
   };
   const {

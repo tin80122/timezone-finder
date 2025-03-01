@@ -97,7 +97,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
   };
   
   // 處理時間過濾變更
-  const handleTimeFilterChange = (event: React.SyntheticEvent, newValue: TimeFilter) => {
+  const handleTimeFilterChange = (_event: React.SyntheticEvent, newValue: TimeFilter) => {
     setTimeFilter(newValue);
   };
   
