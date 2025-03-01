@@ -327,7 +327,13 @@ const WorldMap: React.FC<WorldMapProps> = ({ userTimeZone, filteredCountries, al
         metaWheelZoom={true}
         twoFingerDrag={true}
       >
-        <ZoomControl />
+        <ZoomControl 
+          buttonStyle={{
+            display:'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        />
         
         {allCountries.map(country => {
           const isFiltered = filteredCountries.some(c => c.code === country.code);
