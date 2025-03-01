@@ -27,7 +27,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse
+  Collapse,
+  Link
 } from '@mui/material';
 import PublicIcon from '@mui/icons-material/Public';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -177,7 +178,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode = false, onToggleDarkMode }) =
                   textShadow: '0 2px 4px rgba(0,0,0,0.2)'
                 }}
               >
-                時區查詢工具
+                下一站旅居去哪裡？
               </Typography>
               <Typography 
                 variant="caption" 
@@ -356,7 +357,16 @@ const Header: React.FC<HeaderProps> = ({ darkMode = false, onToggleDarkMode }) =
                       alignItems: 'center',
                       fontStyle: 'italic'
                     }}>
-                      Made with <FavoriteIcon sx={{ mx: 0.5, fontSize: 16, color: theme.palette.error.main }} /> in 2025
+                      © 2025 Waiting 
+                      <Link
+                        underline="none"
+                        sx={{ color: 'blue.80', margin: '0 3px' }}
+                        href="https://www.instagram.com/sheroontheway/"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                      @sheroontheway
+                      </Link>
                     </Typography>
                   </Box>
                 </DialogContentText>
