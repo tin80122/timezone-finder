@@ -230,7 +230,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
   };
 
   return (
-    <Card elevation={3} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+    <Card elevation={3} sx={{ borderRadius: 2, overflow: 'hidden', width: '100%' }}>
       <CardHeader
         title={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -253,8 +253,8 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
       />
       
       {/* 過濾和搜尋工具列 */}
-      <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-        <Grid container spacing={2} alignItems="center">
+      <Box sx={{ p: { xs: 1.5, sm: 2 }, borderBottom: '1px solid', borderColor: 'divider' }}>
+        <Grid container spacing={{ xs: 1, sm: 2 }} alignItems="center">
           {/* 搜尋框 */}
           <Grid item xs={12} md={6}>
             <Paper 
@@ -429,30 +429,42 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                 <Box key={country.code}>
                   <ListItem 
                     sx={{ 
-                      py: 1.5, 
+                      py: { xs: 1, sm: 1.5 }, 
+                      px: { xs: 1, sm: 2 },
                       borderLeft: `4px solid ${country.timeStatus.color}`,
                       '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' },
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      width: '100%',
+                      overflow: 'hidden'
                     }}
                     onClick={() => toggleExpand(country.code)}
                   >
-                    <Grid container spacing={1} alignItems="center">
-                      <Grid item xs={12} sm={5}>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Grid container spacing={{ xs: 0.5, sm: 1 }} alignItems="center" wrap="nowrap" sx={{ width: '100%' }}>
+                      <Grid item xs={12} sm={6} md={5} sx={{ minWidth: 0 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
                           <Avatar 
                             sx={{ 
-                              width: 36, 
-                              height: 36, 
-                              mr: 1.5, 
+                              width: { xs: 28, sm: 36 }, 
+                              height: { xs: 28, sm: 36 }, 
+                              mr: { xs: 1, sm: 1.5 }, 
                               bgcolor: alpha(country.timeStatus.color, 0.8),
-                              fontSize: '0.8rem',
-                              fontWeight: 'bold'
+                              fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                              fontWeight: 'bold',
+                              flexShrink: 0
                             }}
                           >
                             {country.code}
                           </Avatar>
-                          <Box>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                          <Box sx={{ minWidth: 0, overflow: 'hidden' }}>
+                            <Typography 
+                              variant="subtitle2" 
+                              sx={{ 
+                                fontWeight: 'bold',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                              }}
+                            >
                               {country.name}
                             </Typography>
                             <Typography 
@@ -460,30 +472,36 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                               color="textSecondary" 
                               sx={{ 
                                 display: 'flex', 
-                                alignItems: 'center' 
+                                alignItems: 'center',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
                               }}
                             >
-                              <LocationCityIcon sx={{ fontSize: 12, mr: 0.5 }} />
+                              <LocationCityIcon sx={{ fontSize: 12, mr: 0.5, flexShrink: 0 }} />
                               {country.capital || '無首都資料'}
                             </Typography>
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item xs={6} sm={3}>
+                      <Grid item xs={6} sm={3} md={3} sx={{ flexShrink: 0 }}>
                         <Tooltip title="與您的時區差距">
                           <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <AccessTimeIcon 
                               sx={{ 
-                                fontSize: 16, 
+                                fontSize: { xs: 14, sm: 16 }, 
                                 mr: 0.5, 
-                                color: getTimeDiffColor(country.timeDiff) 
+                                color: getTimeDiffColor(country.timeDiff),
+                                flexShrink: 0
                               }} 
                             />
                             <Chip 
                               size="small" 
                               label={getTimeDiffLabel(country.timeDiff)} 
                               sx={{ 
-                                height: 20, 
+                                height: { xs: 18, sm: 20 }, 
+                                fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                                px: { xs: 0.5, sm: 0.75 },
                                 bgcolor: alpha(getTimeDiffColor(country.timeDiff), 0.1),
                                 color: getTimeDiffColor(country.timeDiff),
                                 fontWeight: 'medium'
@@ -492,7 +510,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                           </Box>
                         </Tooltip>
                       </Grid>
-                      <Grid item xs={5} sm={3}>
+                      <Grid item xs={5} sm={2} md={3} sx={{ flexShrink: 0 }}>
                         <Box sx={{ 
                           display: 'flex', 
                           alignItems: 'center',
@@ -502,13 +520,14 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                               component="span" 
                               sx={{ 
                                 display: 'inline-block', 
-                                width: 10, 
-                                height: 10, 
+                                width: 8, 
+                                height: 8, 
                                 borderRadius: '50%', 
                                 bgcolor: country.timeStatus.color, 
-                                mr: 1,
+                                mr: 0.5,
                                 border: '1px solid white',
-                                boxShadow: '0 0 0 1px rgba(0,0,0,0.1)'
+                                boxShadow: '0 0 0 1px rgba(0,0,0,0.1)',
+                                flexShrink: 0
                               }} 
                             />
                           </Tooltip>
@@ -517,35 +536,40 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                             sx={{ 
                               fontFamily: 'monospace', 
                               fontWeight: 'medium',
-                              color: country.timeStatus.color
+                              color: country.timeStatus.color,
+                              fontSize: { xs: '0.7rem', sm: '0.8rem' }
                             }}
                           >
                             {formatTime(country.localTime, country.timezones[0])}
                           </Typography>
                         </Box>
                       </Grid>
-                      <Grid item xs={1} sm={1} sx={{ textAlign: 'right' }}>
+                      <Grid item xs="auto" sx={{ ml: 'auto', textAlign: 'right', flexShrink: 0 }}>
                         {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                       </Grid>
                     </Grid>
                   </ListItem>
                   
                   <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                    <CardContent sx={{ bgcolor: alpha(theme.palette.primary.main, 0.03), py: 2 }}>
-                      <Grid container spacing={2}>
+                    <CardContent sx={{ bgcolor: alpha(theme.palette.primary.main, 0.03), py: { xs: 1.5, sm: 2 }, px: { xs: 1.5, sm: 2 } }}>
+                      <Grid container spacing={{ xs: 1, sm: 2 }}>
                         <Grid item xs={12} sm={6}>
                           <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                             <LanguageIcon fontSize="small" sx={{ mr: 0.5 }} />
                             時區資訊
                           </Typography>
-                          <Box sx={{ mt: 1 }}>
+                          <Box sx={{ mt: 1, display: 'flex', flexWrap: 'wrap' }}>
                             {country.timezones.map((timezone, i) => (
                               <Chip
                                 key={i}
                                 icon={<PublicIcon fontSize="small" />}
                                 label={timezone}
                                 size="small"
-                                sx={{ m: 0.5 }}
+                                sx={{ 
+                                  m: 0.5, 
+                                  height: { xs: 24, sm: 28 },
+                                  fontSize: { xs: '0.65rem', sm: '0.75rem' }
+                                }}
                               />
                             ))}
                           </Box>
@@ -558,11 +582,12 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mt: 1 }}>
                             <Box 
                               sx={{ 
-                                width: 12, 
-                                height: 12, 
+                                width: 10, 
+                                height: 10, 
                                 borderRadius: '50%', 
                                 bgcolor: country.timeStatus.color, 
-                                mr: 1 
+                                mr: 1,
+                                flexShrink: 0
                               }} 
                             />
                             <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
@@ -570,12 +595,12 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                             </Typography>
                           </Box>
                           <Box sx={{ 
-                            p: 1, 
+                            p: { xs: 0.75, sm: 1 }, 
                             borderRadius: 1, 
                             bgcolor: alpha(country.timeStatus.color, 0.1),
                             border: `1px solid ${alpha(country.timeStatus.color, 0.3)}`
                           }}>
-                            <Typography variant="body2">
+                            <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' }, wordBreak: 'break-word' }}>
                               當您的時間是 <b>{formatTime(new Date(), userTimeZone)}</b>，
                               {country.name} 的時間是 <b>{formatTime(country.localTime, country.timezones[0])}</b>
                             </Typography>
@@ -594,9 +619,11 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
           {/* 分頁控制 */}
           <Box sx={{ 
             display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' }, 
             justifyContent: 'space-between', 
-            alignItems: 'center',
-            p: 2, 
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            gap: { xs: 1, sm: 0 },
+            p: { xs: 1.5, sm: 2 }, 
             borderTop: '1px solid', 
             borderColor: 'divider' 
           }}>
@@ -608,18 +635,26 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
               {expandedCountry === 'all' ? '收起全部' : '展開全部'}
             </Button>
             
-            <Pagination 
-              count={Math.ceil(processedCountries.length / rowsPerPage)} 
-              page={page} 
-              onChange={handlePageChange}
-              color="primary"
-              size="small"
-            />
-            
-            <Typography variant="caption" color="text.secondary">
-              顯示 {Math.min((page - 1) * rowsPerPage + 1, processedCountries.length)} - {Math.min(page * rowsPerPage, processedCountries.length)} 
-              {' '}共 {processedCountries.length} 個國家
-            </Typography>
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' }, 
+              alignItems: { xs: 'center', sm: 'center' },
+              width: { xs: '100%', sm: 'auto' },
+              gap: 1
+            }}>
+              <Pagination 
+                count={Math.ceil(processedCountries.length / rowsPerPage)} 
+                page={page} 
+                onChange={handlePageChange}
+                color="primary"
+                size="small"
+              />
+              
+              <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'block', sm: 'inline' } }}>
+                顯示 {Math.min((page - 1) * rowsPerPage + 1, processedCountries.length)} - {Math.min(page * rowsPerPage, processedCountries.length)} 
+                {' '}共 {processedCountries.length} 個國家
+              </Typography>
+            </Box>
           </Box>
         </>
       )}
