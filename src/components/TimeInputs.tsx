@@ -146,15 +146,6 @@ const TimeInputs: React.FC<TimeInputsProps> = ({
               onChange={(e) => onWorkTimeChange(e.target.value)}
               variant="outlined"
               size="small"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Typography variant="body2" sx={{ fontWeight: 'medium', width: '80px' }}>
-                      {getTimeLabel(workHours)}
-                    </Typography>
-                  </InputAdornment>
-                ),
-              }}
               inputProps={{
                 step: 300, // 5 min
               }}
@@ -193,15 +184,6 @@ const TimeInputs: React.FC<TimeInputsProps> = ({
               onChange={(e) => onWakeTimeChange(e.target.value)}
               variant="outlined"
               size="small"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Typography variant="body2" sx={{ fontWeight: 'medium', width: '80px' }}>
-                      {getTimeLabel(wakeHours)}
-                    </Typography>
-                  </InputAdornment>
-                ),
-              }}
               inputProps={{
                 step: 300, // 5 min
               }}
