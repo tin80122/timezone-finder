@@ -45,16 +45,16 @@ import WorkIcon from '@mui/icons-material/Work';
 import { Country } from '../types/index';
 import { calculateTimeDifference, formatTime } from '../utils/timezoneUtils';
 
-interface CountryListProps {
-  userTimeZone: string;
-  filteredCountries: Country[];
-}
-
 // 排序選項
 type SortOption = 'timeDiff' | 'name' | 'workingHours';
 
 // 過濾選項
 type TimeFilter = 'all' | 'working' | 'awake' | 'night';
+
+interface CountryListProps {
+  userTimeZone: string;
+  filteredCountries: Country[];
+}
 
 const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountries }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -64,12 +64,12 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const theme = useTheme();
-  
+
   // 重置分頁當過濾條件變更
   useEffect(() => {
     setPage(1);
   }, [searchTerm, timeFilter, sortBy]);
-  
+
   // 獲取時間狀態（工作時間、清醒時間、夜間時間）
   const getTimeStatus = (localHour: number): { color: string; label: string; type: TimeFilter } => {
     if (localHour >= 9 && localHour < 18) {
@@ -80,38 +80,38 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
       return { color: '#F44336', label: '夜間時間', type: 'night' };
     }
   };
-  
+
   // 處理搜尋輸入變更
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
-  
+
   // 清除搜尋
   const handleClearSearch = () => {
     setSearchTerm('');
   };
-  
+
   // 處理排序變更
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortBy(event.target.value as SortOption);
   };
-  
+
   // 處理時間過濾變更
   const handleTimeFilterChange = (_event: React.SyntheticEvent, newValue: TimeFilter) => {
     setTimeFilter(newValue);
   };
-  
+
   // 處理分頁變更
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  
+
   // 處理每頁行數變更
   const handleRowsPerPageChange = (event: SelectChangeEvent) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(1);
   };
-  
+
   // 切換展開/收起國家詳情
   const toggleExpand = (countryCode: string) => {
     if (expandedCountry === countryCode) {
@@ -120,7 +120,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
       setExpandedCountry(countryCode);
     }
   };
-  
+
   // 展開所有國家
   const expandAll = () => {
     if (expandedCountry === 'all') {
@@ -129,17 +129,16 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
       setExpandedCountry('all');
     }
   };
-  
+
   // 使用 useMemo 處理國家過濾和排序，避免不必要的重新計算
   const processedCountries = useMemo(() => {
-    // 計算每個國家的當前時間和時間狀態
     const countriesWithTime = filteredCountries.map(country => {
       const timeDiff = calculateTimeDifference(country.code, userTimeZone);
       const now = new Date();
       const localTime = new Date(now.getTime() + timeDiff * 60 * 60 * 1000);
       const localHour = localTime.getHours();
       const timeStatus = getTimeStatus(localHour);
-      
+
       return {
         ...country,
         timeDiff,
@@ -148,8 +147,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
         timeStatus
       };
     });
-    
-    // 應用搜尋過濾
+
     let filtered = countriesWithTime;
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
@@ -159,13 +157,11 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
         country.code.toLowerCase().includes(term)
       );
     }
-    
-    // 應用時間狀態過濾
+
     if (timeFilter !== 'all') {
       filtered = filtered.filter(country => country.timeStatus.type === timeFilter);
     }
-    
-    // 應用排序
+
     const sorted = [...filtered];
     switch (sortBy) {
       case 'timeDiff':
@@ -175,7 +171,6 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
         sorted.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'workingHours':
-        // 優先顯示工作時間的國家，然後是清醒時間，最後是夜間時間
         sorted.sort((a, b) => {
           const priorityA = a.timeStatus.type === 'working' ? 0 : a.timeStatus.type === 'awake' ? 1 : 2;
           const priorityB = b.timeStatus.type === 'working' ? 0 : b.timeStatus.type === 'awake' ? 1 : 2;
@@ -183,16 +178,16 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
         });
         break;
     }
-    
+
     return sorted;
   }, [filteredCountries, searchTerm, timeFilter, sortBy, userTimeZone]);
-  
+
   // 計算分頁
   const paginatedCountries = useMemo(() => {
     const startIndex = (page - 1) * rowsPerPage;
     return processedCountries.slice(startIndex, startIndex + rowsPerPage);
   }, [processedCountries, page, rowsPerPage]);
-  
+
   // 計算時間過濾器的計數
   const filterCounts = useMemo(() => {
     const counts = {
@@ -201,20 +196,20 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
       awake: 0,
       night: 0
     };
-    
+
     filteredCountries.forEach(country => {
       const timeDiff = calculateTimeDifference(country.code, userTimeZone);
       const now = new Date();
       const localTime = new Date(now.getTime() + timeDiff * 60 * 60 * 1000);
       const localHour = localTime.getHours();
       const timeStatus = getTimeStatus(localHour);
-      
+
       counts[timeStatus.type]++;
     });
-    
+
     return counts;
   }, [filteredCountries, userTimeZone]);
-  
+
   // 獲取時間差距的顏色
   const getTimeDiffColor = (diff: number): string => {
     const absDiff = Math.abs(diff);
@@ -222,7 +217,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
     if (absDiff <= 5) return theme.palette.warning.main;
     return theme.palette.error.main;
   };
-  
+
   // 獲取時間差距的標籤
   const getTimeDiffLabel = (diff: number): string => {
     if (diff === 0) return '相同時區';
@@ -230,17 +225,19 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
   };
 
   return (
-    <Card elevation={3} sx={{ borderRadius: 2, overflow: 'hidden', width: '100%' }}>
+    <Card elevation={3} sx={{ borderRadius: 2, overflow: 'hidden', width: '100%', maxWidth: { xs: '400px', sm: 'none' } }}>
       <CardHeader
         title={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <FlagIcon sx={{ mr: 1 }} />
-            <Typography variant="h6">符合條件的國家</Typography>
+            <FlagIcon sx={{ mr: 1, fontSize: { xs: '1rem', sm: '1.25rem' } }} />
+            <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+              符合條件的國家
+            </Typography>
             <Chip 
               label={processedCountries.length} 
               size="small" 
               color="primary" 
-              sx={{ ml: 1 }}
+              sx={{ ml: 1, fontSize: { xs: '0.65rem', sm: '0.75rem' }, height: { xs: 18, sm: 20 } }}
             />
           </Box>
         }
@@ -248,14 +245,13 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
           backgroundColor: alpha(theme.palette.primary.main, 0.05),
           borderBottom: '1px solid',
           borderColor: 'divider',
-          pb: 1
+          py: { xs: 0.75, sm: 1 }
         }}
       />
-      
+
       {/* 過濾和搜尋工具列 */}
-      <Box sx={{ p: { xs: 1.5, sm: 2 }, borderBottom: '1px solid', borderColor: 'divider' }}>
+      <Box sx={{ p: { xs: 1, sm: 2 }, borderBottom: '1px solid', borderColor: 'divider' }}>
         <Grid container spacing={{ xs: 1, sm: 2 }} alignItems="center">
-          {/* 搜尋框 */}
           <Grid item xs={12} md={6}>
             <Paper 
               component="form" 
@@ -263,65 +259,75 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                 p: '2px 4px', 
                 display: 'flex', 
                 alignItems: 'center',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                width: '100%'
               }}
             >
               <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="搜尋國家、首都或國家代碼"
+                sx={{ ml: 1, flex: 1, fontSize: { xs: '0.85rem', sm: '1rem' } }}
+                placeholder="搜尋國家、首都或代碼"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                startAdornment={<SearchIcon sx={{ color: 'action.active', mr: 1 }} />}
+                startAdornment={<SearchIcon sx={{ color: 'action.active', mr: 1, fontSize: { xs: 18, sm: 20 } }} />}
               />
               {searchTerm && (
                 <IconButton size="small" onClick={handleClearSearch}>
-                  <ClearIcon fontSize="small" />
+                  <ClearIcon fontSize="small" sx={{ fontSize: { xs: 16, sm: 18 } }} />
                 </IconButton>
               )}
             </Paper>
           </Grid>
-          
-          {/* 排序選擇器 */}
+
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel id="sort-select-label">排序方式</InputLabel>
+              <InputLabel id="sort-select-label" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                排序方式
+              </InputLabel>
               <Select
                 labelId="sort-select-label"
                 id="sort-select"
                 value={sortBy}
                 label="排序方式"
                 onChange={handleSortChange}
-                startAdornment={<SortIcon sx={{ color: 'action.active', mr: 1 }} />}
+                sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                startAdornment={<SortIcon sx={{ color: 'action.active', mr: 1, fontSize: { xs: 16, sm: 18 } }} />}
               >
-                <MenuItem value="timeDiff">時差（由小到大）</MenuItem>
-                <MenuItem value="name">國家名稱（字母順序）</MenuItem>
-                <MenuItem value="workingHours">時間狀態（優先工作時間）</MenuItem>
+                <MenuItem value="timeDiff" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  時差（由小到大）
+                </MenuItem>
+                <MenuItem value="name" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  國家名稱（字母順序）
+                </MenuItem>
+                <MenuItem value="workingHours" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                  時間狀態（優先工作時間）
+                </MenuItem>
               </Select>
             </FormControl>
           </Grid>
-          
-          {/* 每頁行數選擇器 */}
+
           <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
-              <InputLabel id="rows-select-label">每頁顯示</InputLabel>
+              <InputLabel id="rows-select-label" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                每頁顯示
+              </InputLabel>
               <Select
                 labelId="rows-select-label"
                 id="rows-select"
                 value={rowsPerPage.toString()}
                 label="每頁顯示"
                 onChange={handleRowsPerPageChange}
+                sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
               >
-                <MenuItem value="5">5 個國家</MenuItem>
-                <MenuItem value="10">10 個國家</MenuItem>
-                <MenuItem value="20">20 個國家</MenuItem>
-                <MenuItem value="50">50 個國家</MenuItem>
+                <MenuItem value="5" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>5 個國家</MenuItem>
+                <MenuItem value="10" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>10 個國家</MenuItem>
+                <MenuItem value="20" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>20 個國家</MenuItem>
+                <MenuItem value="50" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>50 個國家</MenuItem>
               </Select>
             </FormControl>
           </Grid>
         </Grid>
-        
-        {/* 時間狀態過濾器 */}
-        <Box sx={{ mt: 2, borderTop: '1px solid', borderColor: 'divider', pt: 2 }}>
+
+        <Box sx={{ mt: 1, borderTop: '1px solid', borderColor: 'divider', pt: 1 }}>
           <Tabs 
             value={timeFilter} 
             onChange={handleTimeFilterChange}
@@ -330,12 +336,13 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
             sx={{
               '& .MuiTab-root': {
                 minWidth: 'auto',
-                px: 2
+                px: { xs: 1, sm: 2 },
+                fontSize: { xs: '0.75rem', sm: '0.875rem' }
               }
             }}
           >
             <Tab 
-              icon={<FilterListIcon />} 
+              icon={<FilterListIcon sx={{ fontSize: { xs: 16, sm: 18 } }} />} 
               iconPosition="start" 
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -343,14 +350,14 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                   <Chip 
                     label={filterCounts.all} 
                     size="small" 
-                    sx={{ ml: 1, height: 20 }}
+                    sx={{ ml: 0.5, height: { xs: 16, sm: 20 }, fontSize: { xs: '0.6rem', sm: '0.75rem' } }}
                   />
                 </Box>
               } 
               value="all" 
             />
             <Tab 
-              icon={<WorkIcon sx={{ color: '#4CAF50' }} />} 
+              icon={<WorkIcon sx={{ color: '#4CAF50', fontSize: { xs: 16, sm: 18 } }} />} 
               iconPosition="start" 
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -358,14 +365,14 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                   <Chip 
                     label={filterCounts.working} 
                     size="small" 
-                    sx={{ ml: 1, height: 20, bgcolor: alpha('#4CAF50', 0.1) }}
+                    sx={{ ml: 0.5, height: { xs: 16, sm: 20 }, bgcolor: alpha('#4CAF50', 0.1), fontSize: { xs: '0.6rem', sm: '0.75rem' } }}
                   />
                 </Box>
               } 
               value="working" 
             />
             <Tab 
-              icon={<WbSunnyIcon sx={{ color: '#FFC107' }} />} 
+              icon={<WbSunnyIcon sx={{ color: '#FFC107', fontSize: { xs: 16, sm: 18 } }} />} 
               iconPosition="start" 
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -373,14 +380,14 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                   <Chip 
                     label={filterCounts.awake} 
                     size="small" 
-                    sx={{ ml: 1, height: 20, bgcolor: alpha('#FFC107', 0.1) }}
+                    sx={{ ml: 0.5, height: { xs: 16, sm: 20 }, bgcolor: alpha('#FFC107', 0.1), fontSize: { xs: '0.6rem', sm: '0.75rem' } }}
                   />
                 </Box>
               } 
               value="awake" 
             />
             <Tab 
-              icon={<NightsStayIcon sx={{ color: '#F44336' }} />} 
+              icon={<NightsStayIcon sx={{ color: '#F44336', fontSize: { xs: 16, sm: 18 } }} />} 
               iconPosition="start" 
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -388,7 +395,7 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                   <Chip 
                     label={filterCounts.night} 
                     size="small" 
-                    sx={{ ml: 1, height: 20, bgcolor: alpha('#F44336', 0.1) }}
+                    sx={{ ml: 0.5, height: { xs: 16, sm: 20 }, bgcolor: alpha('#F44336', 0.1), fontSize: { xs: '0.6rem', sm: '0.75rem' } }}
                   />
                 </Box>
               } 
@@ -397,14 +404,14 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
           </Tabs>
         </Box>
       </Box>
-      
+
       {/* 國家列表 */}
       {paginatedCountries.length === 0 ? (
-        <Box sx={{ textAlign: 'center', py: 6, px: 2 }}>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+        <Box sx={{ textAlign: 'center', py: 4, px: 1 }}>
+          <Typography variant="h6" color="text.secondary" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
             沒有找到符合條件的國家
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
             嘗試調整您的搜尋條件或時間過濾器
           </Typography>
           {searchTerm && (
@@ -412,8 +419,8 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
               variant="outlined" 
               size="small" 
               onClick={handleClearSearch}
-              startIcon={<ClearIcon />}
-              sx={{ mt: 2 }}
+              startIcon={<ClearIcon sx={{ fontSize: { xs: 14, sm: 16 } }} />}
+              sx={{ mt: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
             >
               清除搜尋
             </Button>
@@ -424,183 +431,163 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
           <List sx={{ p: 0, bgcolor: 'background.paper' }}>
             {paginatedCountries.map((country, index) => {
               const isExpanded = expandedCountry === country.code || expandedCountry === 'all';
-              
+
               return (
                 <Box key={country.code}>
                   <ListItem 
                     sx={{ 
-                      py: { xs: 1, sm: 1.5 }, 
+                      py: { xs: 0.5, sm: 1.5 }, 
                       px: { xs: 1, sm: 2 },
-                      borderLeft: `4px solid ${country.timeStatus.color}`,
+                      borderLeft: `3px solid ${country.timeStatus.color}`,
                       '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' },
                       cursor: 'pointer',
                       width: '100%',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      alignItems: { xs: 'flex-start', sm: 'center' },
+                      gap: { xs: 0.5, sm: 0 }
                     }}
                     onClick={() => toggleExpand(country.code)}
                   >
-                    <Grid container spacing={{ xs: 0.5, sm: 1 }} alignItems="center" wrap="nowrap" sx={{ width: '100%' }}>
-                      <Grid item xs={12} sm={6} md={5} sx={{ minWidth: 0 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
-                          <Avatar 
-                            sx={{ 
-                              width: { xs: 28, sm: 36 }, 
-                              height: { xs: 28, sm: 36 }, 
-                              mr: { xs: 1, sm: 1.5 }, 
-                              bgcolor: alpha(country.timeStatus.color, 0.8),
-                              fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                              fontWeight: 'bold',
-                              flexShrink: 0
-                            }}
-                          >
-                            {country.code}
-                          </Avatar>
-                          <Box sx={{ minWidth: 0, overflow: 'hidden' }}>
-                            <Typography 
-                              variant="subtitle2" 
-                              sx={{ 
-                                fontWeight: 'bold',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis'
-                              }}
-                            >
-                              {country.name}
-                            </Typography>
-                            <Typography 
-                              variant="caption" 
-                              color="textSecondary" 
-                              sx={{ 
-                                display: 'flex', 
-                                alignItems: 'center',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis'
-                              }}
-                            >
-                              <LocationCityIcon sx={{ fontSize: 12, mr: 0.5, flexShrink: 0 }} />
-                              {country.capital || '無首都資料'}
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={6} sm={3} md={3} sx={{ flexShrink: 0 }}>
-                        <Tooltip title="與您的時區差距">
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <AccessTimeIcon 
-                              sx={{ 
-                                fontSize: { xs: 14, sm: 16 }, 
-                                mr: 0.5, 
-                                color: getTimeDiffColor(country.timeDiff),
-                                flexShrink: 0
-                              }} 
-                            />
-                            <Chip 
-                              size="small" 
-                              label={getTimeDiffLabel(country.timeDiff)} 
-                              sx={{ 
-                                height: { xs: 18, sm: 20 }, 
-                                fontSize: { xs: '0.65rem', sm: '0.75rem' },
-                                px: { xs: 0.5, sm: 0.75 },
-                                bgcolor: alpha(getTimeDiffColor(country.timeDiff), 0.1),
-                                color: getTimeDiffColor(country.timeDiff),
-                                fontWeight: 'medium'
-                              }}
-                            />
-                          </Box>
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={5} sm={2} md={3} sx={{ flexShrink: 0 }}>
-                        <Box sx={{ 
-                          display: 'flex', 
-                          alignItems: 'center',
-                        }}>
-                          <Tooltip title={country.timeStatus.label}>
-                            <Box 
-                              component="span" 
-                              sx={{ 
-                                display: 'inline-block', 
-                                width: 8, 
-                                height: 8, 
-                                borderRadius: '50%', 
-                                bgcolor: country.timeStatus.color, 
-                                mr: 0.5,
-                                border: '1px solid white',
-                                boxShadow: '0 0 0 1px rgba(0,0,0,0.1)',
-                                flexShrink: 0
-                              }} 
-                            />
-                          </Tooltip>
-                          <Typography 
-                            variant="body2" 
-                            sx={{ 
-                              fontFamily: 'monospace', 
-                              fontWeight: 'medium',
-                              color: country.timeStatus.color,
-                              fontSize: { xs: '0.7rem', sm: '0.8rem' }
-                            }}
-                          >
-                            {formatTime(country.localTime, country.timezones[0])}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs="auto" sx={{ ml: 'auto', textAlign: 'right', flexShrink: 0 }}>
-                        {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                      </Grid>
-                    </Grid>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: { xs: 0.25, sm: 0 } }}>
+                        <Avatar 
+                          sx={{ 
+                            width: { xs: 20, sm: 36 }, 
+                            height: { xs: 20, sm: 36 }, 
+                            mr: { xs: 1, sm: 1.5 }, 
+                            bgcolor: alpha(country.timeStatus.color, 0.8),
+                            fontSize: { xs: '0.6rem', sm: '0.8rem' },
+                            fontWeight: 'bold',
+                            flexShrink: 0
+                          }}
+                        >
+                          {country.code}
+                        </Avatar>
+                        <Typography 
+                          variant="subtitle2" 
+                          sx={{ 
+                            fontWeight: 'bold',
+                            fontSize: { xs: '0.85rem', sm: '1rem' },
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxWidth: { xs: '250px', sm: 'none' }
+                          }}
+                        >
+                          {country.name}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mt: { xs: 0.25, sm: 0 }, flexWrap: 'wrap', gap: 0.5 }}>
+                        <AccessTimeIcon 
+                          sx={{ 
+                            fontSize: { xs: 12, sm: 16 }, 
+                            mr: 0.5, 
+                            color: getTimeDiffColor(country.timeDiff),
+                            flexShrink: 0
+                          }} 
+                        />
+                        <Chip 
+                          size="small" 
+                          label={getTimeDiffLabel(country.timeDiff)} 
+                          sx={{ 
+                            height: { xs: 16, sm: 20 }, 
+                            fontSize: { xs: '0.6rem', sm: '0.75rem' },
+                            px: 0.5,
+                            bgcolor: alpha(getTimeDiffColor(country.timeDiff), 0.1),
+                            color: getTimeDiffColor(country.timeDiff),
+                            fontWeight: 'medium'
+                          }}
+                        />
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            fontFamily: 'monospace', 
+                            fontWeight: 'medium',
+                            color: country.timeStatus.color,
+                            fontSize: { xs: '0.65rem', sm: '0.8rem' },
+                            ml: 0.5
+                          }}
+                        >
+                          {formatTime(country.localTime, country.timezones[0])}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    {isExpanded ? (
+                      <ExpandLessIcon sx={{ fontSize: { xs: 16, sm: 20 }, ml: { xs: 0, sm: 'auto' }, mt: { xs: 0.5, sm: 0 } }} />
+                    ) : (
+                      <ExpandMoreIcon sx={{ fontSize: { xs: 16, sm: 20 }, ml: { xs: 0, sm: 'auto' }, mt: { xs: 0.5, sm: 0 } }} />
+                    )}
                   </ListItem>
-                  
+
                   <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                    <CardContent sx={{ bgcolor: alpha(theme.palette.primary.main, 0.03), py: { xs: 1.5, sm: 2 }, px: { xs: 1.5, sm: 2 } }}>
+                    <CardContent sx={{ bgcolor: alpha(theme.palette.primary.main, 0.03), py: { xs: 1, sm: 2 }, px: { xs: 1, sm: 2 } }}>
                       <Grid container spacing={{ xs: 1, sm: 2 }}>
                         <Grid item xs={12} sm={6}>
-                          <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                            <LanguageIcon fontSize="small" sx={{ mr: 0.5 }} />
+                          <Typography 
+                            variant="subtitle2" 
+                            gutterBottom 
+                            sx={{ display: 'flex', alignItems: 'center', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                          >
+                            <LanguageIcon fontSize="small" sx={{ mr: 0.5, fontSize: { xs: 14, sm: 16 } }} />
                             時區資訊
                           </Typography>
-                          <Box sx={{ mt: 1, display: 'flex', flexWrap: 'wrap' }}>
+                          <Box sx={{ mt: 0.5, display: 'flex', flexWrap: 'wrap' }}>
                             {country.timezones.map((timezone, i) => (
                               <Chip
                                 key={i}
-                                icon={<PublicIcon fontSize="small" />}
+                                icon={<PublicIcon fontSize="small" sx={{ fontSize: { xs: 12, sm: 14 } }} />}
                                 label={timezone}
                                 size="small"
                                 sx={{ 
-                                  m: 0.5, 
-                                  height: { xs: 24, sm: 28 },
-                                  fontSize: { xs: '0.65rem', sm: '0.75rem' }
+                                  m: 0.25, 
+                                  height: { xs: 20, sm: 28 },
+                                  fontSize: { xs: '0.6rem', sm: '0.75rem' }
                                 }}
                               />
                             ))}
                           </Box>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                          <Typography variant="subtitle2" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
-                            <AccessTimeIcon fontSize="small" sx={{ mr: 0.5 }} />
+                          <Typography 
+                            variant="subtitle2" 
+                            gutterBottom 
+                            sx={{ display: 'flex', alignItems: 'center', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                          >
+                            <AccessTimeIcon fontSize="small" sx={{ mr: 0.5, fontSize: { xs: 14, sm: 16 } }} />
                             當地時間狀態
                           </Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mt: 1 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, mt: 0.5 }}>
                             <Box 
                               sx={{ 
-                                width: 10, 
-                                height: 10, 
+                                width: 8, 
+                                height: 8, 
                                 borderRadius: '50%', 
                                 bgcolor: country.timeStatus.color, 
                                 mr: 1,
                                 flexShrink: 0
                               }} 
                             />
-                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium', fontSize: { xs: '0.7rem', sm: '0.875rem' } }}>
                               {country.timeStatus.label} ({country.localHour}:00)
                             </Typography>
                           </Box>
+                          <Typography 
+                            variant="caption" 
+                            color="textSecondary" 
+                            sx={{ fontSize: { xs: '0.65rem', sm: '0.75rem' }, display: 'block', mb: 0.5 }}
+                          >
+                            <LocationCityIcon sx={{ fontSize: 12, mr: 0.5, flexShrink: 0 }} />
+                            {country.capital || '無首都資料'}
+                          </Typography>
                           <Box sx={{ 
-                            p: { xs: 0.75, sm: 1 }, 
+                            p: { xs: 0.5, sm: 1 }, 
                             borderRadius: 1, 
                             bgcolor: alpha(country.timeStatus.color, 0.1),
                             border: `1px solid ${alpha(country.timeStatus.color, 0.3)}`
                           }}>
-                            <Typography variant="body2" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' }, wordBreak: 'break-word' }}>
+                            <Typography variant="body2" sx={{ fontSize: { xs: '0.65rem', sm: '0.875rem' }, wordBreak: 'break-word' }}>
                               當您的時間是 <b>{formatTime(new Date(), userTimeZone)}</b>，
                               {country.name} 的時間是 <b>{formatTime(country.localTime, country.timezones[0])}</b>
                             </Typography>
@@ -609,32 +596,32 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                       </Grid>
                     </CardContent>
                   </Collapse>
-                  
+
                   {index < paginatedCountries.length - 1 && <Divider />}
                 </Box>
               );
             })}
           </List>
-          
-          {/* 分頁控制 */}
+
           <Box sx={{ 
             display: 'flex', 
             flexDirection: { xs: 'column', sm: 'row' }, 
             justifyContent: 'space-between', 
             alignItems: { xs: 'flex-start', sm: 'center' },
             gap: { xs: 1, sm: 0 },
-            p: { xs: 1.5, sm: 2 }, 
+            p: { xs: 1, sm: 2 }, 
             borderTop: '1px solid', 
             borderColor: 'divider' 
           }}>
             <Button 
               size="small" 
               onClick={expandAll}
-              startIcon={expandedCountry === 'all' ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              startIcon={expandedCountry === 'all' ? <ExpandLessIcon sx={{ fontSize: { xs: 14, sm: 16 } }} /> : <ExpandMoreIcon sx={{ fontSize: { xs: 14, sm: 16 } }} />}
+              sx={{ fontSize: { xs: '0.7rem', sm: '0.875rem' } }}
             >
               {expandedCountry === 'all' ? '收起全部' : '展開全部'}
             </Button>
-            
+
             <Box sx={{ 
               display: 'flex', 
               flexDirection: { xs: 'column', sm: 'row' }, 
@@ -648,9 +635,19 @@ const CountryList: React.FC<CountryListProps> = ({ userTimeZone, filteredCountri
                 onChange={handlePageChange}
                 color="primary"
                 size="small"
+                sx={{
+                  '& .MuiPaginationItem-root': {
+                    fontSize: { xs: '0.65rem', sm: '0.875rem' },
+                    minWidth: { xs: 20, sm: 32 },
+                    height: { xs: 20, sm: 32 },
+                  }
+                }}
               />
-              
-              <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'block', sm: 'inline' } }}>
+              <Typography 
+                variant="caption" 
+                color="text.secondary" 
+                sx={{ display: { xs: 'block', sm: 'inline' }, fontSize: { xs: '0.6rem', sm: '0.75rem' } }}
+              >
                 顯示 {Math.min((page - 1) * rowsPerPage + 1, processedCountries.length)} - {Math.min(page * rowsPerPage, processedCountries.length)} 
                 {' '}共 {processedCountries.length} 個國家
               </Typography>

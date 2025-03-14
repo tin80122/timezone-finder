@@ -133,7 +133,8 @@ function App() {
           alignContent: "center",
           maxWidth: "1200px",
           mx: "auto",
-          px: 2,
+          px: 1,
+          py: 1
         }}
       >
         <Header />
