@@ -138,7 +138,7 @@ const TimeZoneSelector: React.FC<TimeZoneSelectorProps> = ({ value, onChange, op
           </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary">
-          選擇您的當地時區，用於計算與其他國家的時差
+          選擇您的目前時區，用於計算與其他國家的時差
         </Typography>
       </Box>
       

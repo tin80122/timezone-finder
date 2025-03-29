@@ -126,7 +126,7 @@ const TimeInputs: React.FC<TimeInputsProps> = ({
           <Box sx={{ mb: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <WorkIcon color="primary" sx={{ mr: 1 }} />
-              <Typography variant="subtitle2">您的上班時間</Typography>
+              <Typography variant="subtitle2">您的上班時間（目前時區）</Typography>
               <Chip 
                 size="small" 
                 label={getTimeDescription(workHours)} 
