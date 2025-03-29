@@ -35,12 +35,10 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import LanguageIcon from '@mui/icons-material/Language';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import FeedbackIcon from '@mui/icons-material/Feedback';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
@@ -138,11 +136,6 @@ const Header: React.FC<HeaderProps> = ({ darkMode = false, onToggleDarkMode }) =
     handleMenuClose();
   };
   
-  // 處理 GitHub 鏈接點擊
-  const handleGitHubClick = () => {
-    window.open('https://github.com/yourusername/timezone-finder', '_blank');
-    handleMenuClose();
-  };
 
   return (
     <AppBar position="static" sx={{ 
