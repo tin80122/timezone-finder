@@ -284,18 +284,6 @@ const Header: React.FC<HeaderProps> = ({ darkMode = false, onToggleDarkMode }) =
                 </MenuItem>
               )}
               <Divider />
-              <MenuItem onClick={handleGitHubClick}>
-                <ListItemIcon>
-                  <GitHubIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="查看原始碼" />
-              </MenuItem>
-              <MenuItem onClick={handleMenuClose}>
-                <ListItemIcon>
-                  <FeedbackIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="提供反饋" />
-              </MenuItem>
             </Menu>
             
             {/* 關於對話框 */}
