@@ -32,7 +32,7 @@ import WorldMap from "./components/WorldMap";
 import CountryList from "./components/CountryList";
 import TimelineChart from "./components/TimelineChart";
 import { TimeZoneConverter } from "./components/TimeZoneConverter";
-import CountryListTimeZoneConverter from "./components/CountryListTimeZoneConverter";
+// import CountryListTimeZoneConverter from "./components/CountryListTimeZoneConverter";
 import { useTimezones } from "./hooks/useTimezones";
 
 // 創建主題
