@@ -31,6 +31,8 @@ import TimeInputs from "./components/TimeInputs";
 import WorldMap from "./components/WorldMap";
 import CountryList from "./components/CountryList";
 import TimelineChart from "./components/TimelineChart";
+import { TimeZoneConverter } from "./components/TimeZoneConverter";
+import CountryListTimeZoneConverter from "./components/CountryListTimeZoneConverter";
 import { useTimezones } from "./hooks/useTimezones";
 
 // 創建主題
@@ -388,6 +390,21 @@ function App() {
               </Box>
             </Paper>
           )}
+          
+         
+          
+          {/* 時區轉換工具 */}
+          <TimeZoneConverter
+            userTimeZone={userTimeZone}
+            countries={filteredCountries}
+            workTime={workTime}
+          />
+          
+          {/* 國家時區列表 */}
+          <CountryListTimeZoneConverter
+            userTimeZone={userTimeZone}
+            countries={allCountries}
+          />
 
           {/* 設置頁面 - 僅在移動設備的設置標籤頁顯示 */}
           {isMobile && activeTab === "settings" && (
