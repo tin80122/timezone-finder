@@ -305,7 +305,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({
             const isSelected = selectedHour !== null && Math.floor(localHour) === selectedHour;
             
             return (
-              <React.Fragment key={country.code}>
+              <React.Fragment key={`${country.code}-${index}`}>
                 {/* 連接線 */}
                 <Box 
                   sx={{ 
@@ -494,7 +494,7 @@ const TimelineChart: React.FC<TimelineChartProps> = ({
                 {countryGroups.map((group, index) => {
                   const timeDiff = group.timeDiff;
                   return (
-                    <Box key={timeDiff} sx={{ mb: 1.5 }}>
+                    <Box key={`${index}-${timeDiff}`} sx={{ mb: 1.5 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                         <Box 
                           sx={{ 

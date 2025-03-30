@@ -401,10 +401,10 @@ function App() {
           />
           
           {/* 國家時區列表 */}
-          <CountryListTimeZoneConverter
+          {/* <CountryListTimeZoneConverter
             userTimeZone={userTimeZone}
             countries={allCountries}
-          />
+          /> */}
 
           {/* 設置頁面 - 僅在移動設備的設置標籤頁顯示 */}
           {isMobile && activeTab === "settings" && (

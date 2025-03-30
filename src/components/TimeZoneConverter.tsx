@@ -16,7 +16,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import dayjs from 'dayjs';
-
 // 你自己定義的型別
 import { TimeZoneOption, Country } from '../types/index';
 
@@ -25,7 +24,7 @@ import {
   getTimeZoneOptions, 
   calculateTimeZoneDifference, 
   formatTime 
-} from '../utils/timeZoneUtils';
+} from '../utils/timezoneUtils';
 
 /**
  * Props
@@ -40,17 +39,26 @@ interface TimeZoneConverterProps {
  * 輔助函數：將 "HH:mm" 格式的時間加上 9 小時（假設上班 9 小時後下班）
  */
 const addHoursToTime = (timeStr: string) => {
-  // 若傳入空字串或格式不符，預設回傳 "09:00"
+  // 若傳入空字串或格式不符，預設回傳 "18:00"
   if (!timeStr) return '18:00';
 
-  const time = dayjs(timeStr, 'HH:mm');
-  if (!time.isValid()) {
+  const [hh, mm] = timeStr.split(':');
+  if (!hh || !mm) {
     console.warn(`Invalid workTime input: ${timeStr}`);
     return '18:00';
   }
-  const result = time.add(9, 'hour').format('HH:mm')
-  return result;
+
+  // 使用當前時間作為基底，但覆蓋小時與分鐘
+  const base = dayjs().hour(parseInt(hh, 10)).minute(parseInt(mm, 10)).second(0).millisecond(0);
+  if (!base.isValid()) {
+    console.warn(`Invalid workTime input: ${timeStr}`);
+    return '18:00';
+  }
+  
+  // 加上9小時後格式化為 "HH:mm"
+  return base.add(9, 'hour').format('HH:mm');
 };
+
 
 export const TimeZoneConverter: React.FC<TimeZoneConverterProps> = ({ userTimeZone, countries, workTime }) => {
   const theme = useTheme();

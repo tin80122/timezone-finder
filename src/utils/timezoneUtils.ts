@@ -76,22 +76,20 @@ export const getTimeZoneOptions = (): TimeZoneOption[] => {
 export const getTimezoneOffset = (timeZone: string): number => {
   try {
     const date = new Date();
-    // 用 ISO 格式輸出
+    // 使用 ISO 格式，避免格式解析問題
     const tzTime = formatInTimeZone(date, timeZone, "yyyy-MM-dd'T'HH:mm:ss");
     const utcTime = formatInTimeZone(date, 'UTC', "yyyy-MM-dd'T'HH:mm:ss");
 
     const tzDate = new Date(tzTime);
     const utcDate = new Date(utcTime);
 
-    // 若解析失敗 -> tzDate 或 utcDate 可能是 Invalid Date
     if (isNaN(tzDate.getTime()) || isNaN(utcDate.getTime())) {
       console.warn(`getTimezoneOffset: Cannot parse timeZone "${timeZone}" on this environment.`);
       return 0; // fallback
     }
 
-    // 計算時差 (小時)
+    // 計算時差（小時），不做四捨五入以保留半小時或 45 分鐘的精度
     const offset = (tzDate.getTime() - utcDate.getTime()) / 1000 / 60 / 60;
-    // 不做四捨五入，以避免 30 分鐘或 45 分鐘時區失準
     return offset;
   } catch (err) {
     console.error(`getTimezoneOffset error for ${timeZone}:`, err);
@@ -207,7 +205,6 @@ export const getCountryCentroid = (countryCode: string): [number, number] => {
  * 11) 格式化時間 (以 12 小時制顯示: "hh:mm a")
  */
 export const formatTime = (time: Date, timeZone: string): string => {
-  // 若傳入的是無效的 Date
   if (isNaN(time.getTime())) {
     return '--:--';
   }
